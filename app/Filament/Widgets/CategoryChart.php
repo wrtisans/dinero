@@ -45,8 +45,17 @@ class CategoryChart extends ApexChartWidget
                 return $item->category_id;
             })
             ->map(function ($item) {
-                return $item->sum('amount') * -1;
+                return abs($item->sum('amount') / 100);
             })->sortDesc()->take(10);
+
+        $categories = Category::whereIn('id', $transactions->keys())->pluck('name', 'id')->toArray();
+        $data = [];
+
+       foreach ($categories as $key => $category) {
+            $data[$category] =  $transactions[$key];
+        }
+
+       arsort($data, SORT_NUMERIC);
 
         return [
             'chart' => [
@@ -55,12 +64,12 @@ class CategoryChart extends ApexChartWidget
             ],
             'series' => [
                 [
-                    'name' => 'BasicBarChart',
-                    'data' => $transactions->values()->toArray(),
+                    'name' => '',
+                    'data' => array_values($data),
                 ],
             ],
             'xaxis' => [
-                'categories' => Category::whereIn('id', $transactions->keys())->pluck('name')->toArray(),
+                'categories' => array_keys($data),
                 'labels' => [
                     'style' => [
                         'fontFamily' => 'inherit',

@@ -18,7 +18,7 @@ class LatestTransaction extends TableWidget
     public function table(Table $table): Table
     {
         return $table
-            ->query(TransactionResource::getEloquentQuery())
+            ->query(TransactionResource::getEloquentQuery()->where('confirmed', true))
             ->defaultPaginationPageOption(5)
             ->defaultSort('happened_at', 'desc')
             ->columns((new TransactionResource())->tableColumns())

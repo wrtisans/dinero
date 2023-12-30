@@ -58,6 +58,7 @@ class WalletResource extends Resource
                             ->label(fn(string $operation): string => $operation == 'create' ? __('wallets.fields.initial_balance') : __('wallets.fields.balance'))
                             ->required()
                             ->numeric()
+                            ->prefix("$")
                             ->inputMode('decimal')
                             ->default(0)
                             ->disabled()
@@ -66,6 +67,7 @@ class WalletResource extends Resource
                             ->label(__('wallets.fields.initial_balance'))
                             ->required()
                             ->numeric()
+                            ->prefix("$")
                             ->columnSpan([
                                 'sm' => 2,
                             ])
@@ -101,6 +103,7 @@ class WalletResource extends Resource
                             ->required()
                             ->columnSpan([
                                 'sm' => 1,
+                                'md' => 2,
                             ])
                             ->default('#22b3e0'),
                         IconPicker::make('icon')
@@ -185,7 +188,10 @@ class WalletResource extends Resource
                             ->color('success')
                             ->send();
                     }),
-                Tables\Actions\EditAction::make()->slideOver(),
+                Tables\Actions\EditAction::make()->mutateRecordDataUsing(function (array $data){
+                    data_set($data, 'balance', (float) $data['balance'] / 100);
+                    return $data;
+                })->slideOver(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -195,14 +201,14 @@ class WalletResource extends Resource
                 Tables\Actions\CreateAction::make()->slideOver(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             RelationManagers\TransactionsRelationManager::class,
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [

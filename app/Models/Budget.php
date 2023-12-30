@@ -29,6 +29,11 @@ class Budget extends Model
         'status',
     ];
 
+    protected $casts = [
+        'day_of_month' => 'array',
+        'day_of_week' => 'array',
+    ];
+
     public function spendAmount(): Attribute
     {
         return Attribute::make(

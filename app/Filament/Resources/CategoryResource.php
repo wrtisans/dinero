@@ -56,7 +56,7 @@ class CategoryResource extends Resource
                         IconPicker::make('icon')
                             ->label(__('categories.fields.icon'))
 //                            ->sets(['lucide-icons'])
-                            ->sets(['heroicons', 'fontawesome-solid'])
+                            ->sets(['heroicons', 'fontawesome-solid', 'remix-icon'])
                             ->columnSpan([
                                 'sm' => 2,
                             ])
@@ -146,14 +146,14 @@ class CategoryResource extends Resource
                 Tables\Actions\CreateAction::make()->slideOver(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             TransactionsRelationManager::class
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -161,8 +161,8 @@ class CategoryResource extends Resource
 //            'create' => Pages\CreateCategory::route('/create'),
 //            'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
-    }    
-    
+    }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

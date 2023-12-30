@@ -21,8 +21,8 @@ return new class extends Migration
             $table->foreignIdFor(Account::class)->constrained((new Account())->getTable())->cascadeOnDelete();
             $table->string('color')->nullable();
             $table->string('period')->comment(implode(',', BudgetPeriodEnum::toArray()));
-            $table->string('day_of_week')->nullable();
-            $table->string('day_of_month')->nullable();
+            $table->json('day_of_week')->nullable();
+            $table->json('day_of_month')->nullable();
             $table->string('month_of_quarter')->nullable();
             $table->string('month_of_year')->nullable();
             $table->string('status')->default(\App\Enums\VisibilityStatusEnum::ACTIVE->value);

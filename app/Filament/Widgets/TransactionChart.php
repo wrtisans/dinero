@@ -47,9 +47,10 @@ class TransactionChart extends ApexChartWidget
             ])
             ->map(function ($item) {
                 return $item->map(function ($item) {
-                    return $item->sum('amount');
+                    return $item->sum('amount') / 100;
                 });
             })->take(10);
+
 
         return [
             'chart' => [

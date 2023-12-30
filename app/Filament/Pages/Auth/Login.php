@@ -11,8 +11,8 @@ class Login extends BasePage
         parent::mount();
 
         $this->form->fill([
-            'email' => 'demo@dinero.app',
-            'password' => '12345678',
+            'email' => 'd@d.com',
+            'password' => 'password',
             'remember' => true,
         ]);
     }

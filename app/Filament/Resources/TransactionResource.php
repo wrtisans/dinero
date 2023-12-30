@@ -237,6 +237,8 @@ class TransactionResource extends Resource
             Tables\Columns\TextColumn::make('amount_float')
                 ->label(__('transactions.fields.amount'))
                 ->numeric()
+                ->prefix('$')
+                ->formatStateUsing(fn(?Model $record): string => abs($record->amount_float))
                 ->sortable(),
             Tables\Columns\TextColumn::make('wallet.name')
                 ->label(__('transactions.fields.wallet'))

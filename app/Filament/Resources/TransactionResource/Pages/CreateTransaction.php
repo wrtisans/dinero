@@ -37,7 +37,7 @@ class CreateTransaction extends CreateRecord
             }
         } elseif(in_array($type, [TransactionTypeEnum::TRANSFER->value, TransactionTypeEnum::PAYMENT->value])) {
             $this->createTransferOrPaymentTransaction($data);
-            $this->sendCreatedNotificationAndRedirect(shouldCreateAnotherInsteadOfRedirecting: false);
+//            $this->sendCreatedNotificationAndRedirect(shouldCreateAnotherInsteadOfRedirecting: false);
             $this->halt();
         }
 

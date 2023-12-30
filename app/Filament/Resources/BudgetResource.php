@@ -79,36 +79,35 @@ class BudgetResource extends Resource
                                             ->searchable()
                                             ->preload()
                                             ->live(),
-                                    ])->columnSpan([
-                                        'sm' => 2,
+                                        Select::make('day_of_week')
+                                            ->label(__('budgets.fields.day_of_week'))
+                                            ->options(__('utilities.weekdays'))
+                                            ->placeholder(collect(__('utilities.weekdays'))->first())
+                                            ->searchable()
+                                            ->preload()
+                                            ->visible(fn (Get $get) => $get('period') === BudgetPeriodEnum::WEEKLY->value),
+                                        Select::make('day_of_month')
+                                            ->label(__('budgets.fields.day_of_month'))
+                                            ->options(month_ordinal_numbers())
+                                            ->searchable()
+                                            ->multiple()
+                                            ->preload()
+                                            ->placeholder(month_ordinal_numbers()->first())
+                                            ->visible(fn (Get $get) => in_array($get('period'), BudgetPeriodEnum::toArrayExcept([BudgetPeriodEnum::WEEKLY->value]))),
+                                        Select::make('month_of_quarter')
+                                            ->label(__('budgets.fields.month_of_quarter'))
+                                            ->options(__('utilities.quarter_months'))
+                                            ->preload()
+                                            ->searchable()
+                                            ->visible(fn (Get $get) => $get('period') === BudgetPeriodEnum::QUARTERLY->value),
+                                        Select::make('month_of_year')
+                                            ->label(__('budgets.fields.month_of_year'))
+                                            ->options(__('utilities.months'))
+                                            ->preload()
+                                            ->searchable()
+                                            ->visible(fn (Get $get) => $get('period') === BudgetPeriodEnum::YEARLY->value),
+                                    ])
                                     ]),
-                                Select::make('day_of_week')
-                                    ->label(__('budgets.fields.day_of_week'))
-                                    ->options(__('utilities.weekdays'))
-                                    ->placeholder(collect(__('utilities.weekdays'))->first())
-                                    ->searchable()
-                                    ->preload()
-                                    ->visible(fn (Get $get) => $get('period') === BudgetPeriodEnum::WEEKLY->value),
-                                Select::make('day_of_month')
-                                    ->label(__('budgets.fields.day_of_month'))
-                                    ->options(month_ordinal_numbers())
-                                    ->searchable()
-                                    ->preload()
-                                    ->placeholder(month_ordinal_numbers()->first())
-                                    ->visible(fn (Get $get) => in_array($get('period'), BudgetPeriodEnum::toArrayExcept([BudgetPeriodEnum::WEEKLY->value]))),
-                                Select::make('month_of_quarter')
-                                    ->label(__('budgets.fields.month_of_quarter'))
-                                    ->options(__('utilities.quarter_months'))
-                                    ->preload()
-                                    ->searchable()
-                                    ->visible(fn (Get $get) => $get('period') === BudgetPeriodEnum::QUARTERLY->value),
-                                Select::make('month_of_year')
-                                    ->label(__('budgets.fields.month_of_year'))
-                                    ->options(__('utilities.months'))
-                                    ->preload()
-                                    ->searchable()
-                                    ->visible(fn (Get $get) => $get('period') === BudgetPeriodEnum::YEARLY->value),
-                            ]),
                         Toggle::make('status')
                             ->required()
                             ->label(__('budgets.fields.enabled'))
@@ -175,14 +174,14 @@ class BudgetResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -190,8 +189,8 @@ class BudgetResource extends Resource
             'create' => Pages\CreateBudget::route('/create'),
             'edit' => Pages\EditBudget::route('/{record}/edit'),
         ];
-    }    
-    
+    }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

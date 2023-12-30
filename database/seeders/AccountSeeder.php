@@ -23,16 +23,6 @@ class AccountSeeder extends Seeder
                 'name' => 'Personal',
                 'owner_id' => $user->id,
             ],
-            [
-                'id' => Ulid::generate(),
-                'name' => 'Business',
-                'owner_id' => $user->id,
-            ],
-            [
-                'id' => Ulid::generate(),
-                'name' => 'Family',
-                'owner_id' => $user->id,
-            ]
         ]);
     }
 }
